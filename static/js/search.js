@@ -115,14 +115,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 modalHistory.push(currentModalData);
             }
         }
-    
+
         modalName.textContent = row.names_of_medicines;
         modalGeneric.textContent = row.Generic_name;
         modalPregnancy.textContent = row.pregnancy_safety === 'N' ? 'חסר מידע ביטחון לתרופה' : row.pregnancy_safety;
         modalMainTitle.textContent = row.main_title;
         modalSecondTitle.textContent = row.sec_title;
         modalExplanation.textContent = row.explanation_medicine;
-    
+
         returnButton.style.display = modalHistory.length > 0 ? 'block' : 'none';
         fetchSuggestions(row.sec_title, row.pregnancy_safety);
         fetchAlternatives(row.sec_title, row.pregnancy_safety, row.names_of_medicines);
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Invalid parameters for suggestions:', secTitle, pregnancySafety);
             return;
         }
-    
+
         fetch('/api/suggestions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (aValue > bValue) return 1;
                     return 0;
                 });
-    
+
                 suggestionsList.innerHTML = '';
                 sortedData.forEach(suggestion => {
                     const li = document.createElement('li');
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Invalid parameters for alternatives:', secTitle, pregnancySafety, currentMedicine);
             return;
         }
-    
+
         fetch('/api/alternatives', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => console.error('Error fetching alternatives:', error));
-    }    
+    }
 
     function sortData(data, criteria) {
         if (criteria === "serial") {
@@ -224,6 +224,11 @@ document.addEventListener('DOMContentLoaded', function() {
     searchForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const query = searchInput.value.trim().toLowerCase().split(" ")[0]; // Extract medicine name
+
+        if (query === 'חן') {
+            searchResults.innerText = 'חן חנונית ❤️';
+            return;
+        }
 
         fetch('/api/search', {
             method: 'POST',

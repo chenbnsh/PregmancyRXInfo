@@ -16,6 +16,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the working directory contents into the container at /app
 COPY . .
 
+ENV FLASK_ENV=production
+ENV FLASK_DEBUG=0
+
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
 
